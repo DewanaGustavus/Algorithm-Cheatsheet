@@ -18,8 +18,9 @@ void bellmanford(int node){
         }
 }
 
-bool negativecycle(){ // RUN BELLMANFORD FIRST
+bool negativecycle(){
     // Time Complexity : O(m)
+    bellmanford();
     for(auto edge:edges){ 
         int start,end,weight;
         tie(start,end,weight) = edge; 
@@ -28,3 +29,33 @@ bool negativecycle(){ // RUN BELLMANFORD FIRST
     return false; 
 }
 
+vector<int> adj[maxn];
+bool SPFA(int s) {
+    vector<int> cnt(n+1, 0);
+    vector<bool> inqueue(n+1, false);
+    queue<int> q;
+
+    dist[s] = 0;
+    q.push(s);
+    inqueue[s] = true;
+    while (!q.empty()) {
+        int u = q.front();
+        q.pop();
+        inqueue[u] = false;
+        for (auto edge : adj[u]) {
+            int v = edge.first;
+            int w = edge.second;
+            if (dist[u] + w < dist[v]) {
+                dist[v] = dist[u] + w;
+                if (!inqueue[v]) {
+                    q.push(v);
+                    inqueue[v] = true;
+                    cnt[v]++;
+                    if (cnt[v] > n)
+                        return false;  // negative cycle
+                }
+            }
+        }
+    }
+    return true;
+}

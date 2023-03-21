@@ -4,6 +4,7 @@ using namespace std;
 const int maxn = 5e5+1;
 const int sqrtn = sqrt(maxn) + 1;
 int s[maxn] = {};
+int cnt = 0;
 
 struct querytype{
     int l, r, idx;
@@ -13,6 +14,14 @@ struct querytype{
         return p1 < p2;
     }
 };
+
+void insert(int num){
+    if(s[num]++ == 0)cnt++;
+}
+
+void del(int num){
+    if(s[num]-- == 1)cnt--;
+}
 
 int main(){
     int n,q;
@@ -34,30 +43,16 @@ int main(){
     int idx = 1;
     map<int,int> indexcomp;
     for(int& num : arr){
-        if(indexcomp[num] == 0)
-            indexcomp[num] = idx++;
+        if(indexcomp[num] == 0)indexcomp[num] = idx++;
         num = indexcomp[num];
     }
     int ans[q];
-    int cnt = 0;
     int l=0,r=-1;
     for(auto quer : querys){
-        while(l > quer.l){
-            if(s[arr[l-1]] == 0)cnt++;
-            s[arr[--l]]++;
-        }
-        while(r < quer.r){
-            if(s[arr[r+1]] == 0)cnt++;
-            s[arr[++r]]++;
-        }
-        while(l < quer.l){
-            if(s[arr[l]] == 1)cnt--;
-            s[arr[l++]]--;
-        }
-        while(r > quer.r){
-            if(s[arr[r]] == 1)cnt--;
-            s[arr[r--]]--;
-        }
+        while(l > quer.l)insert(arr[--l]);
+        while(r < quer.r)insert(arr[++r]);
+        while(l < quer.l)del(arr[l++]);
+        while(r > quer.r)del(arr[r--]);
         ans[quer.idx] = cnt;
     }
     

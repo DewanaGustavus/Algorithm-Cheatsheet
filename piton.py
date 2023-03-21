@@ -1,6 +1,8 @@
 def inputs():
-    return map(int, input().split())
+    return list(map(int, input().split()))
 
+for _ in range(int(input())):
+    n = int(input())
 
 class fen:
     def __init__(self, x):

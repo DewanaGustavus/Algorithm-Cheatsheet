@@ -98,6 +98,7 @@ int fact_pow (int n, int k) {
 
 void iterating_subset(){
     // just a template
+    int n;
     for(int bit=0;bit<(1<<n);bit++){
         vector<int> subset;
         for(int i=0;i<n;i++)

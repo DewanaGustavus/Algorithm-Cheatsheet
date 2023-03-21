@@ -1,0 +1,20 @@
+1. buat nyari jawaban bener bikin algo baru yang bener bener bruteforce, copas di bruteforce.cpp
+2. copas algo kita ke solution.cpp
+3. bikin random testcase generator, copas di generator.cpp
+4. check dulu hasil output randomnya bagus gak
+5. compile pake fast compile, commandnya ada di compile command tinggal copas di terminal
+6. jalanin script bashnya
+7. buat nge compare hasilnya bisa pake compare selectednya VSCode (mirip comparenya github)
+8. selain random generator bisa juga bikin generator yang generate semua kemungkinan testcase (kalo bisa bikin algo generatornya dan runtimenya kuat)
+9. kalo masih gak nemu counter pikirin edge case yang gak ke generate random
+
+note : 
+- testcase counternya ada di file namanya countertc
+- jawaban solusi ada di outsol, jawaban bruteforce ada di outbrute
+- random generatornya bisa diatur juga buat bikin special case tapi masih ada yang random
+- fastcompile itu biar runtimenya ngetestnya cepet
+- ini cuma nyari counter kalo WA, kalo TLE masih harus pake time complexity analysis
+- jangan pake freopen("input.txt", "r", stdin) (fileread)
+- buat generator bisa siapin macro sesuka hati, buat solution sama bruteforce tinggal copas code kita pas nge CP
+- sebisa mungkin algo bruteforcenya jangan ampe exponential time complexitynya
+- biar runtime cepet constraintnya gak usah gede gede amat gak apa apa

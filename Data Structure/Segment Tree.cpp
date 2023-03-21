@@ -114,7 +114,7 @@ struct segtree2d{
         n = (1 << n);
         m = log2(mat[0].size() - 1) + 1;
         m = (1 << m);
-
+ 
         segment = vector<vector<int>>(2*n, vector<int>(2*m));
         for(int i=0;i<mat.size();i++){
             for(int j=0;j<mat[i].size();j++){
@@ -122,33 +122,33 @@ struct segtree2d{
             }
         }
     }
-    void add1d(vector<int>& seg, int x, int val, int idx, int sl, int sr){
+    void add1d(int idxy, int x, int val, int idx, int sl, int sr){
         if(sl > x || sr < x)return;
-        seg[idx] = operation(seg[idx], val);
+        segment[idxy][idx] = operation(segment[idxy][idx], val);
         if(sl == x && sr == x)return;
         int mid = (sl + sr)/2;
-        add1d(seg, x, val, 2*idx, sl, mid);
-        add1d(seg, x, val, 2*idx+1, mid+1, sr);
+        if(sl <= x && x <= mid)add1d(idxy, x, val, 2*idx, sl, mid);
+        else add1d(idxy, x, val, 2*idx+1, mid+1, sr);
     }
     void add(int x, int y, int val){add2d(x, y, val, 1, 0, n-1);}
     void add2d(int x, int y, int val, int idx, int sl, int sr){
         if(sl > y || sr < y)return;
-        add1d(segment[idx], x, val, 1, 0, m-1);
+        add1d(idx, x, val, 1, 0, m-1);
         if(sl == y && sr == y)return;
         int mid = (sl + sr)/2;
-        add2d(x, y, val, 2*idx, sl, mid);
-        add2d(x, y, val, 2*idx+1, mid+1, sr);
+        if(sl <= y && y <= mid)add2d(x, y, val, 2*idx, sl, mid);
+        else add2d(x, y, val, 2*idx+1, mid+1, sr);
     }
-    int sum1d(vector<int>& seg, int x1, int x2, int idx, int sl, int sr){
+    int sum1d(int idxy, int x1, int x2, int idx, int sl, int sr){
         if(x1 > sr || x2 < sl)return init;
-        if(x1 <= sl && sr <= x2)return seg[idx];
+        if(x1 <= sl && sr <= x2)return segment[idxy][idx];
         int mid = (sl + sr)/2;
-        return operation(sum1d(seg, x1, x2, 2*idx, sl, mid), sum1d(seg, x1, x2, 2*idx+1, mid+1, sr));
+        return operation(sum1d(idxy, x1, x2, 2*idx, sl, mid), sum1d(idxy, x1, x2, 2*idx+1, mid+1, sr));
     }
     int sum(int x1, int y1, int x2, int y2){return sum2d(x1, y1, x2, y2, 1, 0, n-1);}
     int sum2d(int x1, int y1, int x2, int y2, int idx, int sl, int sr){
         if(y1 > sr || y2 < sl)return init;
-        if(y1 <= sl && sr <= y2)return sum1d(segment[idx], x1, x2, 1, 0, m-1);
+        if(y1 <= sl && sr <= y2)return sum1d(idx, x1, x2, 1, 0, m-1);
         int mid = (sl + sr)/2;
         return operation(sum2d(x1, y1, x2, y2, 2*idx, sl, mid), sum2d(x1, y1, x2, y2, 2*idx+1, mid+1, sr));
     }
