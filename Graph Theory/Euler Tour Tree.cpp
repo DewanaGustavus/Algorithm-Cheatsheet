@@ -51,9 +51,9 @@ int depth[maxn] = {};
 int starttime[maxn];
 int endtime[maxn];
 int timer[2*maxn];
-int TIME;
+int TIME = 0;
 
-void dfs(int node, int par = 0){
+void dfs(int node, int par = 1){
     depth[node] = depth[par] + 1;
     lift[node][0] = par;
     timer[node] = TIME;
@@ -68,15 +68,15 @@ void dfs(int node, int par = 0){
     endtime[node] = TIME++;
 }
 
-bool isancestor(int node, int v){
-    return starttime[node] <= starttime[v] && endtime[node] >= endtime[v];
+bool isancestor(int a, int b){
+    return starttime[a] <= starttime[b] && endtime[a] >= endtime[b];
 }
 
-int lca(int node, int v){
-    if(isancestor(node, v))return node;
-    if(isancestor(v, node))return v;
+int lca(int a, int b){
+    if(isancestor(a, b))return a;
+    if(isancestor(b, a))return b;
     for (int i=LOG-1;i>=0;i--) {
-        if(!isancestor(lift[node][i], v)) node = lift[node][i];
+        if(!isancestor(lift[a][i], b)) a = lift[a][i];
     }
-    return lift[node][0];
+    return lift[a][0];
 }

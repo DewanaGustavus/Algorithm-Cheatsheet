@@ -178,6 +178,7 @@ struct IndexCompression{
     }
 };
 
+// https://codeforces.com/blog/entry/43230
 // https://www.spoj.com/problems/COT2/
 int32_t main(){
     fastIO

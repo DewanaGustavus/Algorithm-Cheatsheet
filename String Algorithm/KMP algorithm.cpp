@@ -22,7 +22,7 @@ vector<int> KMP(string str, string pattern){
     vector<int> matching_idx;
     for(int i=0;i<n;i++){
         if(pi[i+m+1] == m){
-            matching_idx.push_back(i-m);
+            matching_idx.push_back(i-m+1);
         }
     }
     return matching_idx;

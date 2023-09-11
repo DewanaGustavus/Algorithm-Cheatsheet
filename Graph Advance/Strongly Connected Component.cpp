@@ -11,7 +11,7 @@ int component[maxn];
 vector<int> new_node;
 vector<int> sccadj[maxn];
 
-void dfs1(int node){
+void dfs1(int node){ // topo sort
     vis[node] = true;
     for(int nxt : adj[node])
         if(!vis[nxt])

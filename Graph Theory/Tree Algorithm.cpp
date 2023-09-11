@@ -16,35 +16,51 @@ void subtreedfs(int root, int prev = -1){
 }
 
 const int maxn = 2e5+5;
-bool visited[maxn];
 int n;
 int maxdist;
 int maxnode;
+vector<int> diameter;
 
-int dfs(int node, int dist){
-    visited[node] = true;
+void dfs1(int node, int dist, int prev = -1){
     if(dist > maxdist){ 
         maxnode = node;
         maxdist = dist;
     }
     
     for(auto next:adj[node]){
-        if(visited[next])continue;
-        dfs(next, dist + 1);
+        if(next == prev)continue;
+        dfs1(next, dist + 1, node);
     }
 }
-int diameter(){
+
+bool founded;
+void dfs2(int node, int dist, int prev = -1) {
+    diameter.pb(node);
+    if(dist == maxdist)founded = true;
+    if(founded)return;
+
+    for(auto next:adj[node]){
+        if(next == prev)continue;
+        dfs2(next, dist + 1, node);
+        if(founded)return;
+    }
+    diameter.pop_back();
+}
+
+void finddiameter(){
     // Time Complexity : O(n + m)
     maxdist = -1;
     maxnode = -1;
-    dfs(1, 1); 
+    dfs1(1, 1); 
 
     maxdist = -1;
-    for(int i=1;i<=n;i++)visited[i]=false;
 
-    dfs(maxnode, 1); 
-    return maxdist;
+    dfs1(maxnode, 1);
+
+    founded = false;
+    dfs2(maxnode, 1);
 }
+
 
 const int maxn = 2e5+5;
 int n;

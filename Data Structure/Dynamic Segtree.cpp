@@ -3,6 +3,10 @@ using namespace std;
 
 // template for sparse point update range sum query 1D and 2D
 struct segtree{
+    const static int init = 0;
+    static int operation(int a, int b) {
+        return a + b;
+    }
     int l, r;
     int val = 0;
     segtree *tl = nullptr, *tr = nullptr;
@@ -25,8 +29,10 @@ struct segtree{
     }
     void add(int idx, int v){
         if(l > idx || r < idx)return; // out bound
-        val += v;
-        if(l == idx && r == idx)return;
+        if(l == idx && r == idx) {
+            val += v;
+            return;
+        }
         int mid = (l+r)/2;
         if(l <= idx && idx <= mid){
             if(!tl)tl = new segtree(l, mid);
@@ -35,14 +41,13 @@ struct segtree{
             if(!tr)tr = new segtree(mid+1, r);
             tr->add(idx, v);
         }
-        
+        val = operation(tl ? tl->val : init, tr ? tr->val : init);
     }
     int sum(int ql, int qr){
         if(ql > r || qr < l)return 0;
         if(ql <= l && r <= qr)return val;
-        int ans = 0;
-        if(tl)ans += tl->sum(ql, qr);
-        if(tr)ans += tr->sum(ql, qr);
+        int ans = operation(tl ? tl->sum(ql, qr) : init, 
+                            tr ? tr->sum(ql, qr) : init);
         return ans;
     }
 };
@@ -81,9 +86,10 @@ struct segtree2d{
     int sum(int x1, int y1, int x2, int y2){
         if(y1 > yr || y2 < yl)return 0;
         if(y1 <= yl && yr <= y2)return yseg->sum(x1, x2);
-        int ans = 0;
-        if(tl)ans += tl->sum(x1, y1, x2, y2);
-        if(tr)ans += tr->sum(x1, y1, x2, y2);
+        int ans = segtree::operation(
+            tl ? tl->sum(x1, y1, x2, y2) : segtree::init, 
+            tr ? tr->sum(x1, y1, x2, y2) : segtree::init
+        );
         return ans;
     }
 };

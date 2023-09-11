@@ -13,10 +13,8 @@ struct DSU{
     }
     
     int find(int x){ // O(log(n))
-        int temp=x; 
-        while(x!=link[x])x=link[x]; 
-        link[temp]=x; 
-        return x;
+        if(x != link[x])link[x] = find(link[x]);
+        return link[x];
     }
 
     void unite(int a,int b){ // O(log(n))

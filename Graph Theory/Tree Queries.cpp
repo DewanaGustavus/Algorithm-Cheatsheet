@@ -4,58 +4,72 @@ using namespace std;
 const int maxn = 2e5+5;
 const int LOG = log2(maxn) + 2;
 vector<int> adj[maxn];
-vector<int> parent(maxn, -1);
-vector<int> visited(maxn);
-int ancestor[maxn][LOG];
-int depth[maxn];
+int parent[maxn][LOG] = {};
+int binlift[maxn][LOG] = {};
+int value[maxn];
+int depth[maxn] = {};
 int root = 1;
 int n;
 
-void changedfs(int node, int currdepth = 0){ // change from arbitrary tree into parent child
-    depth[node] = currdepth;
-    visited[node] = true;
+void operation(int a, int b) {return a + b;} // tree operation
+
+void changedfs(int node, int prev){ // change from arbitrary tree into parent child
+    depth[node] = depth[prev] + 1;
     for(auto next:adj[node]){
-        if(visited[next])continue;
-        parent[next] = node;
-        changedfs(next, currdepth + 1);
+        if(next == node)continue;
+        parent[next][0] = node;
+        changedfs(next, node);
     }
 }
 
 void build(){
-    changedfs(root);
-    parent[root] = root; 
-    for(int node=1;node<=n;node++){
-        ancestor[node][0] = parent[node]; 
+    parent[root] = root;
+    depth[root] = 0;
+    changedfs(root, root);
+
+    for(int node=1;node<=n;node++) {
+        // value on node
+        binlift[node][0] = value[node];
     }
     
     for(int j=1;j<LOG;j++) 
         for(int node=1;node<=n;node++){ 
-            ancestor[node][j] = ancestor[ancestor[node][j-1]][j-1]; 
+            parent[node][j] = parent[parent[node][j-1]][j-1]; 
+            binlift[node][j] = operation(binlift[node][j-1], binlift[parent[node][j-1]][j-1]);
         }
 }
 
-int k_ancestor(int node, int k){ // O(log(n))
-    for(int j=0;j<LOG;j++){ 
-        if(node == -1)break;
-        if(k&(1<<j)) 
-            node = ancestor[node][j]; 
+int getans(int a, int b) {
+    // querying from path a to b what is operation result after applying to all value
+    if(depth[a] < depth[b])swap(a,b);
+    int k = depth[a] - depth[b];
+
+    int ansa = 0;
+    int ansb = 0;
+    for(int j = LOG - 1;j>=0;j--) {
+        if(k & (1 << j)){
+            ansa = operation(ansa, binlift[a][j]);
+            a = parent[a][j];
+        }
     }
-    return node;
-}
 
-int lca(int a, int b){ // O(log(n))
-    if(depth[a] < depth[b])swap(a,b); 
-    int k = depth[a] - depth[b]; 
-    a = k_ancestor(a, k);
-    
-    if(a==b)return a;
-    for(int j=LOG-1;j>=0;j--)
-        if(ancestor[a][j] != ancestor[b][j]){ 
-            a = ancestor[a][j];
-            b = ancestor[b][j];
+    if(a == b){
+        ansa = operation(ansa, binlift[a][0]);
+        return ansa;
+    }
+    for(int j=LOG - 1;j >= 0;j--) {
+        if(parent[a][j] != parent[b][j]) {
+            ansa = operation(ansa, binlift[a][j]);
+            a = parent[a][j];
+            ansb = operation(ansb, binlift[b][j]);
+            b = parent[b][j];
         }
+    }
     
-    return ancestor[a][0]; 
+    ansa = operation(ansa, binlift[a][1]);
+    ansb = operation(ansb, binlift[b][0]);
+    ansa = operation(ansa, ansb);
+    return ansa;
 }
 
 int dist(int a, int b){ // O(log(n))
