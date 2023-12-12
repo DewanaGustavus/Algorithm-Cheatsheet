@@ -15,8 +15,8 @@ void add_edge(int from, int to, int cap, int cost){
     int m = edges.size();
     edges.emplace_back(from, to, cap, cost);
     edges.emplace_back(to, from, 0, -cost);
-    adj[from].pb(m);
-    adj[to].pb(m+1);
+    adj[from].push_back(m);
+    adj[to].push_back(m+1);
 }
 
 void SPFA(int n, int source, vector<int>& dist, vector<int>& p) {

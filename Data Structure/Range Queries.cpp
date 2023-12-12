@@ -86,8 +86,8 @@ struct Prefsum2D{
                 prefsum[i-1][j-1] + arr2d[i-1][j-1];
     }
 
-    int sumrange(int x1,int y1,int x2,int y2){
-        return prefsum[x1][y1] - prefsum[x2][y1] - prefsum[x1][y2] + prefsum[x2][y2];
+    int sumrange(int x1,int y1,int x2,int y2){ // 1 indexing
+        return prefsum[x1-1][y1-1] - prefsum[x2][y1-1] - prefsum[x1-1][y2] + prefsum[x2][y2];
     }
 
 };

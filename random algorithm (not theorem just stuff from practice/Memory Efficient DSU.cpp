@@ -1,10 +1,9 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class MemoryEfficientUnionFind{
+struct MemoryEfficientUnionFind{
     // union find but only use node that used in query
     // by using map data structure
-public:
     map<int,int> link;
     map<int,int> size;
     int component = 0;

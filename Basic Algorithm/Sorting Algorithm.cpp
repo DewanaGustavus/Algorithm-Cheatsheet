@@ -3,36 +3,24 @@ using namespace std;
 
 int binarysearch(vector<int> array, int target){
     // Time Complexity : O(log(n))
-    int length = array.size();
-    int low = 0;
-    int high = length-1;
+    int n = array.size();
 
-    while(low<=high){
-        int mid = (low+high)/2;
-        int num = array[mid];
-
-        if(target==num)return mid;
-        else if(target<num)high=mid-1;
-        else low=mid+1;
-    }
-    return -1;
-}
-
-void simplebinarysearch(){
-    vector<int> arr;
-    int n;
-    int check = [](int x){
-        return 1;
+    auto check = [&](int idx) {
+        return array[idx] == target;
     };
-
-
     int low = 0;
-    int high = n-1;
-    while(low<=high){
+    int high = n;
+    int ans = -1;
+    while(low <= high){
         int mid = (low+high)/2;
-        if(check(mid))low=mid+1;
-        else high=mid-1;
+        if(check(mid)) {
+            ans = mid;
+            high = mid - 1;
+        }else {
+            low = mid + 1;
+        }
     }
+    return ans;
 }
 
 int countcommon(vector<int> A, vector<int> B){

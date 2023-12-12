@@ -6,7 +6,7 @@ struct Mex {
     set<int> missing;
     vector<int> arr;
     Mex() {missing.insert(0);}
-    Mex(vi &array) : Mex(){
+    Mex(vector<int> &array) : Mex(){
         for(int x : array) {
             insert(x);
         }

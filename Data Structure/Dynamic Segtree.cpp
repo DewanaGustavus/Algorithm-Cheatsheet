@@ -8,7 +8,7 @@ struct segtree{
         return a + b;
     }
     int l, r;
-    int val = 0;
+    int val = init;
     segtree *tl = nullptr, *tr = nullptr;
     segtree(int n){
         int tn = log2(n-1) + 1;
@@ -30,7 +30,7 @@ struct segtree{
     void add(int idx, int v){
         if(l > idx || r < idx)return; // out bound
         if(l == idx && r == idx) {
-            val += v;
+            val = operation(val, v);
             return;
         }
         int mid = (l+r)/2;
@@ -44,7 +44,7 @@ struct segtree{
         val = operation(tl ? tl->val : init, tr ? tr->val : init);
     }
     int sum(int ql, int qr){
-        if(ql > r || qr < l)return 0;
+        if(ql > r || qr < l)return init;
         if(ql <= l && r <= qr)return val;
         int ans = operation(tl ? tl->sum(ql, qr) : init, 
                             tr ? tr->sum(ql, qr) : init);

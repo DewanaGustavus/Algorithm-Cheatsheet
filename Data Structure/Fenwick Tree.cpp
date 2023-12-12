@@ -10,16 +10,16 @@ struct FenwickPURQ{
         length = array.size();
         original = array;
         binaryindextree = vector<int>(length+1);
-        for(int i=0;i<length;i++)update(i+1,array[i]);
+        for(int i=0;i<length;i++)update(i,array[i]);
     }
     void update(int idx, int value){ // O(log(n))
-        for(; idx<=length ; idx+=idx&-idx){
+        for(++idx; idx<=length ; idx+=idx&-idx){
             binaryindextree[idx] += value;
         }
     }
     int prefixsum(int idx){ // O(log(n))
         int total = 0;
-        for(; idx>=1 ; idx-=idx&-idx){
+        for(++idx; idx>=1 ; idx-=idx&-idx){
             total += binaryindextree[idx];
         }
         return total;
@@ -38,20 +38,18 @@ struct FenwickRUPQ{
         length = array.size();
         original = array;
         binaryindextree = vector<int>(length+1);
-        for(int i=0;i<length;i++)rangeupdate(i+1,i+1,array[i]);
+        for(int i=0;i<length;i++)rangeupdate(i,i,array[i]);
     }
     void update(int idx, int value){ // O(log(n))
-        for(; idx<=length ; idx+=idx&-idx){
+        for(++idx; idx<=length ; idx+=idx&-idx){
             binaryindextree[idx] += value;
         }
     }
     void rangeupdate(int l, int r, int val) { // O(log(n))
-        // add 1-indexing [l, r]
         update(l, val);
         update(r + 1, -val);
     }
     int value(int idx){ // O(log(n))
-        // point query 0-based indexing
         int ret = 0;
         for (++idx; idx > 0; idx -= idx & -idx){
             ret += binaryindextree[idx];
@@ -71,7 +69,7 @@ struct FenwickRURQ{
         original = array;
         BIT1 = vector<int>(length+2);
         BIT2 = vector<int>(length+2);
-        for(int i=0;i<length;i++)rangeupdate(i+1, i+1,array[i]);
+        for(int i=0;i<length;i++)rangeupdate(i, i,array[i]);
     }
     void update(vector<int> &BIT, int idx, int value){ // O(log(n))
         for(; idx<=length ; idx+=idx&-idx){
@@ -79,7 +77,7 @@ struct FenwickRURQ{
         }
     }
     void rangeupdate(int l, int r, int val) { // O(log(n))
-        // add [l, r]
+        l++;r++;
         update(BIT1, l, val);
         update(BIT1, r + 1, -val);
         update(BIT2, l, val*(l-1));
@@ -93,7 +91,7 @@ struct FenwickRURQ{
         return ret;
     }
     int prefixsum(int idx){
-        return sum(BIT1, idx)*idx - sum(BIT2, idx);
+        return sum(BIT1, idx)*(idx + 1) - sum(BIT2, idx);
     }
     int sumrange(int l, int r){
         return prefixsum(r) - prefixsum(l-1);

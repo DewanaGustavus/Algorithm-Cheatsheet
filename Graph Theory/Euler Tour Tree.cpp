@@ -3,20 +3,20 @@ using namespace std;
 
 const int maxn = 2e5+5;
 vector<int> adj[maxn];
-bool vis[maxn];
+int depth[maxn] = {};
 int subtreesize[maxn];
 int eulertouridx[maxn];
 int eulerarray[maxn];
 int idx = 0;
 
-void dfs(int node){
-    vis[node] = 1;
+void dfs(int node, int prev = 0){
+    depth[node] = depth[prev] + 1;
     eulerarray[idx] = node;
     eulertouridx[node] = idx++;
     subtreesize[node] = 1;
     for(int nxt : adj[node]){
-        if(vis[nxt])continue;
-        dfs(nxt);
+        if(nxt == prev)continue;
+        dfs(nxt, node);
         subtreesize[node] += subtreesize[nxt];
     }
 }
@@ -44,7 +44,7 @@ void timedfs(int node){
 
 // time DFS process LCA
 const int maxn = 2e5 + 5;
-const int LOG = log2(maxn) + 2;
+const int LOG = 20;
 vector<int> adj[maxn];
 int lift[maxn][LOG];
 int depth[maxn] = {};
@@ -70,6 +70,15 @@ void dfs(int node, int par = 1){
 
 bool isancestor(int a, int b){
     return starttime[a] <= starttime[b] && endtime[a] >= endtime[b];
+}
+
+int binlift(int a, int k) {
+    for (int i=0;i<LOG;i++) {
+        if(k & (1 << i)) {
+            a = lift[a][i];
+        }
+    }
+    return a;
 }
 
 int lca(int a, int b){

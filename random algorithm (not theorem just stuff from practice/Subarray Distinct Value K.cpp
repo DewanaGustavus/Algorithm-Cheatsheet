@@ -2,9 +2,9 @@
 using namespace std;
 
 // https://www.geeksforgeeks.org/count-of-subarrays-having-exactly-k-distinct-elements/
-int atMostK(vector<int>& arr, int n, int k){
+int atMostK(vector<int>& arr, int k){
     // TIme Complexity : O(n) with two pointer
-    n = arr.size();
+    int n = arr.size();
     map<int,int> mp;
     int cnt = 0;
     int l = 0;
