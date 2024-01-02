@@ -53,12 +53,11 @@ node* add_persistent(int idx, int val, node* root){
     }else if(l <= idx && idx <= mid){
         new_node->tr = root->tr;
         new_node->tl = add_persistent(idx, val, root->tl);
-        new_node->val = new_node->tl->val + new_node->tr->val;
     }else{
         new_node->tl = root->tl;
         new_node->tr = add_persistent(idx, val, root->tr);
-        new_node->val = new_node->tl->val + new_node->tr->val;
     }
+    new_node->val = new_node->tl->val + new_node->tr->val;
     return new_node;
 }
  

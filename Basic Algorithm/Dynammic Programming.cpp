@@ -48,17 +48,37 @@ int pathsum(vector<vector<int>> maze){
     return shortest[n-1][m-1];
 }
 
-int knapsack(vector<int> bag, int target){
+vector<int> knapsack(vector<int> &bag, int target){
     // Time Complexity : O(n*m)
-    int dp[target+1]={};
+    // decompose sqrt knapsack, to make O(m*sqrt(m))
+    vector<int> cnt(target + 1);
+    for(int weight : bag) {
+        cnt[weight]++;
+    }
+ 
+    vector<int> newbag;
+    for(int i=0;i<=target;i++) {
+        if(cnt[i] >= 3) {
+            int move = (cnt[i] - 1) / 2;
+            if((2 * i) <= target) {
+                cnt[2 * i] += move;
+            }
+            cnt[i] -= 2 * move;
+        }
+        for(int j=0;j<cnt[i];j++) {
+            newbag.push_back(i);
+        }
+    }
+
+    vector<int> dp(target+1);
     dp[0] = 1;
     
-    for(int weight:bag)
+    for(int weight:newbag)
         for(int i=target;i>=0;i--)
             if(dp[i] && i+weight<=target)dp[i+weight]=1;
     
 
-    return dp[target];
+    return dp;
 }
 
 int stringedit(string word, string target){

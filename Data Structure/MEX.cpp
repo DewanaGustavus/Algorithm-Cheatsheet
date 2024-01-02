@@ -5,8 +5,12 @@ struct Mex {
     map<int, int> freq;
     set<int> missing;
     vector<int> arr;
-    Mex() {missing.insert(0);}
-    Mex(vector<int> &array) : Mex(){
+    Mex(int size) {
+        for(int i=0;i<=size;i++) {
+            missing.insert(i);
+        }
+    }
+    Mex(vector<int> &array) : Mex(array.size()){
         for(int x : array) {
             insert(x);
         }
@@ -17,7 +21,6 @@ struct Mex {
     void insert(int value) {
         freq[value]++;
         arr.push_back(value);
-        missing.insert(arr.size());
         missing.erase(value);
     }
     void update(int idx, int val) {

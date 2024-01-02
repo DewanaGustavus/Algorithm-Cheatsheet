@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+// dynamic segtree
 // template for sparse point update range sum query 1D and 2D
 struct segtree{
     const static int init = 0;
@@ -12,7 +13,7 @@ struct segtree{
     segtree *tl = nullptr, *tr = nullptr;
     segtree(int n){
         int tn = log2(n-1) + 1;
-        tn = (1<<tn);
+        tn = (1LL<<tn);
         l = 0;
         r = tn - 1;
     }
@@ -96,12 +97,12 @@ struct segtree2d{
 
 segtree2d make_segtree2d(int n, int m){ // n = how much row(y), m = col(x)
     int tn = log2(n-1) + 1;
-    tn = (1<<tn);
+    tn = (1LL<<tn);
     bly = 0;
     bry = tn - 1;
 
     int tm = log2(m-1) + 1;
-    tm = (1<<tm);
+    tm = (1LL<<tm);
     blx = 0;
     brx = tm - 1;
     return segtree2d(0, bry);

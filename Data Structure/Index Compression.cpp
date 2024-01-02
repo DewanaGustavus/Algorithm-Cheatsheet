@@ -13,7 +13,8 @@ struct IndexCompression{
         idxcomp.erase(unique(idxcomp.begin(), idxcomp.end()), idxcomp.end());
         n = idxcomp.size();
     }
-
+    
+    int val(int idx) {return idxcomp[idx];}
     int idx(int x){
         int index = lower_bound(idxcomp.begin(), idxcomp.end(), x) - idxcomp.begin();
         if(index == n || idxcomp[index] != x)return -1;

@@ -4,11 +4,9 @@ using namespace std;
 struct FenwickPURQ{
     // Point Update Range Query
     vector<int> binaryindextree;
-    vector<int> original;
     int length;
     FenwickPURQ(vector<int> array){ // O(n log(n))
         length = array.size();
-        original = array;
         binaryindextree = vector<int>(length+1);
         for(int i=0;i<length;i++)update(i,array[i]);
     }
@@ -32,11 +30,9 @@ struct FenwickPURQ{
 struct FenwickRUPQ{
     // Range Update Point Query
     vector<int> binaryindextree;
-    vector<int> original;
     int length;
     FenwickRUPQ(vector<int> array){ // O(n log(n))
         length = array.size();
-        original = array;
         binaryindextree = vector<int>(length+1);
         for(int i=0;i<length;i++)rangeupdate(i,i,array[i]);
     }
@@ -62,11 +58,9 @@ struct FenwickRURQ{
     // Range Update Range Query
     vector<int> BIT1;
     vector<int> BIT2;
-    vector<int> original;
     int length;
     FenwickRURQ(vector<int> array){ // O(n log(n))
         length = array.size();
-        original = array;
         BIT1 = vector<int>(length+2);
         BIT2 = vector<int>(length+2);
         for(int i=0;i<length;i++)rangeupdate(i, i,array[i]);

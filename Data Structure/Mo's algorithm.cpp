@@ -23,10 +23,14 @@ void del(int num){
     if(s[num]-- == 1)cnt--;
 }
 
+int getans() {
+    return cnt;
+}
+
 int main(){
     int n,q;
     cin>>n>>q;
-    vector<querytype> querys;
+    vector<querytype> queRyS;
     int arr[n];
     for(int& num : arr)cin>>num;
     
@@ -35,10 +39,10 @@ int main(){
         cin>>l>>r;
         l--;r--;
         querytype qi = {l,r,i};
-        querys.push_back(qi);
+        queRyS.push_back(qi);
     }
 
-    sort(querys.begin(), querys.end());
+    sort(queRyS.begin(), queRyS.end());
     
     int idx = 1;
     map<int,int> indexcomp;
@@ -48,12 +52,13 @@ int main(){
     }
     int ans[q];
     int l=0,r=-1;
-    for(auto quer : querys){
-        while(l > quer.l)insert(arr[--l]);
-        while(r < quer.r)insert(arr[++r]);
-        while(l < quer.l)del(arr[l++]);
-        while(r > quer.r)del(arr[r--]);
-        ans[quer.idx] = cnt;
+    // Mo's Algorithm
+    for(auto queri : queRyS){
+        while(l > queri.l)insert(arr[--l]);
+        while(r < queri.r)insert(arr[++r]);
+        while(l < queri.l)del(arr[l++]);
+        while(r > queri.r)del(arr[r--]);
+        ans[queri.idx] = getans();
     }
     
     for(int i=0;i<q;i++){
